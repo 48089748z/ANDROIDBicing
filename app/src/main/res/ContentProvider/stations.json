@@ -1,0 +1,45 @@
+{
+  "documentation": "Bicing stations information",
+  "fields": [
+    {
+      "name": "type",
+      "type": "String"
+    },
+    {
+      "name": "latitude",
+      "type": "String"
+    },
+    {
+      "name": "longitude",
+      "type": "String"
+    },
+    {
+      "name": "streetName",
+      "type": "String"
+    },
+    {
+      "name": "streetNumber",
+      "type": "String"
+    },
+    {
+      "name": "altitude",
+      "type": "String"
+    },
+    {
+      "name": "slots",
+      "type": "String"
+    },
+    {
+      "name": "bikes",
+      "type": "String"
+    },
+    {
+      "name": "nearbyStations",
+      "type": "String"
+    },
+    {
+      "name": "status",
+      "type": "String"
+    }
+  ]
+}
