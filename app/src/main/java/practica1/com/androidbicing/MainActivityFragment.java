@@ -1,6 +1,7 @@
 package practica1.com.androidbicing;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.List;
@@ -46,6 +48,15 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
         downloadStations();
 
         ListView listView = (ListView) mainActivityFragment.findViewById(R.id.LVstations);
+        Button openMap = (Button) mainActivityFragment.findViewById(R.id.BTmap);
+        openMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent map = new Intent(getContext(), MapsActivity.class);
+                startActivity(map);
+            }
+        });
         adapter = new BicingAdapter(
                 getContext(),
                 R.layout.listview_layout,
@@ -129,14 +140,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
         return new CursorLoader(getContext(),
                 StationsColumns.CONTENT_URI,
                 null,
                 null,
                 null,
-                "_id");
+                null);
     }
 
     @Override

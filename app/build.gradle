@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'com.squareup.retrofit:retrofit:+'
     compile 'com.squareup.retrofit:converter-gson:+'
+    compile 'com.google.android.gms:play-services:7.8.0'
 }
