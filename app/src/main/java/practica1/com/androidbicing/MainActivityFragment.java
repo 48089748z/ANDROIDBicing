@@ -39,17 +39,24 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     public String BASE_URL = "http://wservice.viabicing.cat/v2/";
     public MainActivityFragment() {}
 
+    public void onStart()
+    {
+        super.onStart();
+        getLoaderManager().restartLoader(0, null, this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View mainActivityFragment =  inflater.inflate(R.layout.fragment_main, container, false);
+        getLoaderManager().restartLoader(0, null, this);
         createRetrofit();
+        deleteDatabase();
         downloadStations();
-
         ListView listView = (ListView) mainActivityFragment.findViewById(R.id.LVstations);
         Button openMap = (Button) mainActivityFragment.findViewById(R.id.BTmap);
-        openMap.setOnClickListener(new View.OnClickListener() {
+        openMap.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v)
             {
@@ -72,7 +79,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         StationsColumns.NEARBYSTATIONS,
                         StationsColumns.SLOTS,
                         StationsColumns.STATUS},
-                new int[] { R.id.TVid,
+                new int[] {
+                        R.id.TVid,
                         R.id.TVbikes,
                         R.id.TVstreetNumber,
                         R.id.TVstreetName,
@@ -84,12 +92,14 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         R.id.TVstatus},
                 0);
         listView.setAdapter(adapter);
-        getLoaderManager().restartLoader(0, null, this);
-
-
-
-
         return mainActivityFragment;
+    }
+    public void deleteDatabase()
+    {
+        getContext().getContentResolver().delete(
+                StationsColumns.CONTENT_URI,
+                null,
+                null);
     }
     public void downloadStations()
     {
@@ -102,10 +112,11 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                 if (response.isSuccess())
                 {
                     StationsList stationsList = response.body();
-                    StationsContentValues values = new StationsContentValues();
-                    for(int x=0; x<stationsList.getStations().size(); x++)
+                    int size = stationsList.getStations().size();
+                    for(int x=0; x<size; x++)
                     {
                         Station station = stationsList.getStations().get(x);
+                        StationsContentValues values = new StationsContentValues();
                         values.putAltitude(station.getAltitude());
                         values.putBikes(station.getBikes());
                         values.putLatitude(station.getLatitude());
@@ -115,8 +126,8 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
                         values.putStatus(station.getStatus());
                         values.putStreetname(station.getStreetName());
                         values.putStreetnumber(station.getStreetNumber());
+                        getContext().getContentResolver().insert(StationsColumns.CONTENT_URI, values.values());
                     }
-                    getContext().getContentResolver().insert(StationsColumns.CONTENT_URI, values.values());
                 }
             }
             @Override
@@ -156,9 +167,6 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
-
-    }
+    public void onLoaderReset(Loader<Cursor> loader) {adapter.swapCursor(null);}
 
 }
