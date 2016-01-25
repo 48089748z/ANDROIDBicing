@@ -60,7 +60,7 @@ public class MainActivityFragment extends Fragment implements LoaderManager.Load
             @Override
             public void onClick(View v)
             {
-                Intent map = new Intent(getContext(), MapsActivity.class);
+                Intent map = new Intent(getContext(), MapActivity.class);
                 startActivity(map);
             }
         });
